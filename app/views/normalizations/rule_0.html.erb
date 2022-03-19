@@ -1,0 +1,495 @@
+<%= javascript_pack_tag 'user/application' %>
+<?xml version="1.0" encoding="Shift_JIS" ?>
+<!DOCTYPE html  PUBLIC
+"-//W3C//DTD XHTML 1.1 plus MathML 2.0//EN"
+"http://www.w3.org/TR/MathML2/dtd/xhtml-math11-f.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" >
+<h1>Normalization#rule</h1>
+
+  <head>
+    <title>MathMLの一意な表現形式記述への変換ツール</title>
+  </head>
+  <body>
+    <input type="hidden" id="kekka" value="<%= @kekka %>">
+    <div id="str_mi_henkan"></div><br/>
+    <div id="str_af_or_it"></div><br/>
+    <div id="str_af_or_zahyou"></div><br/>
+    <div id="str_ip"></div><br/>
+    <div id="str_ic"></div><br/>
+    <br/>
+    <script>
+        const kekka_str = document.getElementById('kekka').value;
+        //kekka_str = kekka_str.replace('"', '')
+        //console.log(kekka_str);
+        let element_str = "";
+        let str_mi_henkan = "";
+        let str_af_or_it = "";
+        let str_af_or_zahyou = "";
+        let str_ip = "";
+        let str_ic = "";
+        let list_counter = 0;
+        let element_change = 0;
+        let list_mi = [];
+        let list_mi_i = [];
+        let list_mi_henkan = [];
+        let list_mi_child = [];
+        let list_af_or_it = [];
+        let list_af_or_zahyou = [];
+        let list_ip = [];
+        let list_ic = [];
+        let list_mi_henkan_num = [];
+        let list_mi_child_num = [];
+        let list_af_or_it_num = [];
+        let list_af_or_zahyou_num = [];
+        let list_ip_num = [];
+        let list_ic_num = [];
+        for (var i=0; i<kekka_str.length;i++){
+            str_i = kekka_str.charAt(i);
+            //console.log(str_i);
+            if(str_i == '['){
+                list_counter += 1;
+                element_str = "";
+                element_change = 0;
+            }else if(str_i == ',' && kekka_str.charAt(i+2) != '/'){
+                element_change = 1;
+            }else{
+                if(list_counter == 1){
+                    if(element_change == 0 && str_i != ']'){
+                        element_str += str_i;
+                        list_mi_child.push(str_i);
+                    }else if(element_change == 1 || str_i == ']'){
+                        list_mi_henkan.push(element_str);
+                        element_str = "";
+                        element_change = 0;
+                        list_mi.push(list_mi_child);
+                        list_mi_child = [];
+                        if(element_change == 1){
+                            element_str += str_i;
+                        }
+                    }
+                }else if(list_counter == 2){
+                    if(element_change == 0 && str_i != ']'){
+                        element_str += str_i;
+                    }else if(element_change == 1 || str_i == ']'){
+                        list_mi_henkan_num.push(element_str);
+                        element_str = "";
+                        element_change = 0;
+                        if(element_change == 1){
+                            element_str += str_i;
+                        }
+                    }
+                }else if(list_counter == 3){
+                    if(element_change == 0 && str_i != ']'){
+                        element_str += str_i;
+                    }else if(element_change == 1 || str_i == ']'){
+                        list_af_or_it.push(element_str);
+                        element_str = "";
+                        element_change = 0;
+                        if(element_change == 1){
+                            element_str += str_i;
+                        }
+                    }
+                }else if(list_counter == 4){
+                    if(element_change == 0 && str_i != ']'){
+                        element_str += str_i;
+                    }else if(element_change == 1 || str_i == ']'){
+                        list_af_or_it_num.push(element_str);
+                        element_str = "";
+                        element_change = 0;
+                        if(element_change == 1){
+                            element_str += str_i;
+                        }
+                    }
+                }else if(list_counter == 5){
+                    if(element_change == 0 && str_i != ']'){
+                        element_str += str_i;
+                    }else if(element_change == 1 || str_i == ']'){
+                        list_af_or_zahyou.push(element_str);
+                        element_str = "";
+                        element_change = 0;
+                        if(element_change == 1){
+                            element_str += str_i;
+                        }
+                    }
+                }else if(list_counter == 6){
+                    if(element_change == 0 && str_i != ']'){
+                        element_str += str_i;
+                    }else if(element_change == 1 || str_i == ']'){
+                        list_af_or_zahyou_num.push(element_str);
+                        element_str = "";
+                        element_change = 0;
+                        if(element_change == 1){
+                            element_str += str_i;
+                        }
+                    }
+                }else if(list_counter == 7){
+                    if(element_change == 0 && str_i != ']'){
+                        element_str += str_i;
+                    }else if(element_change == 1 || str_i == ']'){
+                        list_ip.push(element_str);
+                        element_str = "";
+                        element_change = 0;
+                        if(element_change == 1){
+                            element_str += str_i;
+                        }
+                    }
+                }else if(list_counter == 8){
+                    if(element_change == 0 && str_i != ']'){
+                        element_str += str_i;
+                    }else if(element_change == 1 || str_i == ']'){
+                        list_ip_num.push(element_str);
+                        element_str = "";
+                        element_change = 0;
+                        if(element_change == 1){
+                            element_str += str_i;
+                        }
+                    }
+                }else if(list_counter == 9){
+                    if(element_change == 0 && str_i != ']'){
+                        element_str += str_i;
+                    }else if(element_change == 1 || str_i == ']'){
+                        list_ic.push(element_str);
+                        element_str = "";
+                        element_change = 0;
+                        if(element_change == 1){
+                            element_str += str_i;
+                        }
+                    }
+                }else if(list_counter == 10){
+                    if(element_change == 0 && str_i != ']'){
+                        element_str += str_i;
+                    }else if(element_change == 1 || str_i == ']'){
+                        list_ic_num.push(element_str);
+                        element_str = "";
+                        element_change = 0;
+                        if(element_change == 1){
+                            element_str += str_i;
+                        }
+                    }
+                }
+            }
+        }
+    
+        let sum_i = 0 //を識別するための変数
+        let sum_j = 0 //同じ変換ルールの時の「n箇所目」のチェックボックスを識別するための変数
+        let sum_i_j = 0 //「全て選択」ボタンを識別するための変数
+        //変数の変換に関するhtmlを作成
+        for (var i=0; i<list_mi_henkan.length;i++){
+            sum_i += 1;
+            sum_i_j += 1;
+            list_mi_i = list_mi[i];
+            lengthNot2 = false;
+            if(list_mi_i.length != 2){
+                lengthNot2 = true;
+            }
+            str_mi_henkan += '・' + list_mi_henkan[i] + 'を１つの変数として扱いますか、それとも複数の変数として扱いますか。<br/><input class="js-check' + sum_i_j + '" type="radio" name="integer' + sum_i_j + '" value="0" id="one' + sum_i_j + '" onclick="formSwitch(' + sum_i_j + ',' + lengthNot2 + ')"><label for="one' + sum_i_j + '">１つの変数として扱う</label><br/><input class="js-check' + sum_i_j + '" type="radio" name="integer' + sum_i_j + '" value="1" id="multiple' + sum_i_j + '" onclick="formSwitch(' + sum_i_j + ',' + lengthNot2 + ')"><label for="multiple' + sum_i_j + '">複数の変数として扱う</label><br/><br/>';
+            str_mi_henkan += '<span id="mi_selecter' + sum_i_j + '" style="display:none;">変数の頭文字にチェックをつけてください。<br/>＊1番目の文字は自動的に頭文字に設定されます。<br/>';
+            for(var j=1; j<list_mi_i.length;j++){
+                str_mi_henkan += '<input type="checkbox" name="multi' + sum_i_j + '" value="' + j + '">' + list_mi_i[j];
+            }
+            str_mi_henkan += '</span><br/>';
+            
+            //同じルールを適用できる箇所を表示
+            if(list_mi_henkan_num[i] != "1"){
+                str_mi_henkan += '他にも同じルールを適用できる箇所があります。<br/>同じルールを適用する箇所にチェックをつけてください。<br/>同じルールを適用しない場合には新しいルールを設定してください。<br/><form name="form"><label><input type="checkbox" name="all' + i + '" onClick="AllChecked(' + i + ',' + sum_j + ',' + list_mi_henkan_num[i] + ');" />全て選択</label><br/>'
+                for(var j=1; j<list_mi_henkan_num[i];j++){
+                    sum_j += 1;
+                    sum_i_j += 1;
+                    str_mi_henkan += '<label><input class="same_rule-check' + sum_j + '" type="checkbox" name="samerule' + i + '" value="' + j + '"  onClick="DisChecked(' + i + ');formSwitch2(' + sum_j + ')">' + (j+1) + '箇所目</label><br/>'
+                    str_mi_henkan += '<span id="same_rule' + sum_j + '" style="display:block;">・' + list_mi_henkan[i] + 'を１つの変数として扱いますか、それとも複数の変数として扱いますか。<br/><input class="js-check' + sum_i_j + '" type="radio" name="integer' + sum_i_j + '" value="0" id="one' + sum_i_j + '" onclick="formSwitch(' + sum_i_j + ',' + lengthNot2 + ')"><label for="one' + sum_i_j + '">１つの変数として扱う</label><br/><input class="js-check' + sum_i_j + '" type="radio" name="integer' + sum_i_j + '" value="1" id="multiple' + sum_i_j + '" onclick="formSwitch(' + sum_i_j + ',' + lengthNot2 + ')"><label for="multiple' + sum_i_j + '">複数の変数として扱う</label><br/><br/>';
+                    str_mi_henkan += '<span id="mi_selecter' + sum_i_j + '" style="display:none;">変数の頭文字にチェックをつけてください。<br/>＊1番目の文字は自動的に頭文字に設定されます。<br/>';
+                    for(var k=1; k<list_mi_i.length;k++){
+                        str_mi_henkan += '<input type="checkbox" name="multi' + sum_i_j + '" value="' + k + '">' + list_mi_i[k];
+                    }
+                    str_mi_henkan += '</span></span><br/>';
+                }
+                str_mi_henkan += '</form><br/>'
+                //sum_j += list_mi_henkan_num.length;
+            }
+            
+        }
+        
+        sum_i_j = 0;
+        //関数か乗算になる箇所の変換に関するhtmlを作成
+        for (var i=0; i<list_af_or_it.length;i++){
+            sum_i += 1;
+            sum_i_j += 1;
+            str_af_or_it += '・<math xmlns="http://www.w3.org/1998/Math/MathML">' + list_af_or_it[i] +
+            '</math>の数学的意味を１つ選択してください。<br/><input type="radio" name="af_or_it' + sum_i_j + '" value="0" id="af' + i + '"><label for="af' + i + '">関数</label><br/><input type="radio" name="af_or_it' + sum_i_j + '" value="1" id="it' + i + '"><label for="it' + i + '">乗算</label><br/><br/><br/>';
+            
+            //同じルールを適用できる箇所を表示
+            if(list_af_or_it_num[i] != "1"){
+                str_af_or_it += '他にも同じルールを適用できる箇所があります。<br/>同じルールを適用する箇所にチェックをつけてください。<br/>同じルールを適用しない場合には新しいルールを設定してください。<br/><form name="form"><label><input type="checkbox" name="all' + sum_i + '" onClick="AllChecked(' + sum_i + ',' + sum_j + ',' + list_af_or_it_num[i] + ');" />全て選択</label><br/>'
+                for(var j=1; j<list_af_or_it_num[i];j++){
+                    sum_j += 1;
+                    sum_i_j += 1;
+                    str_af_or_it += '<label><input class="same_rule-check' + sum_j + '" type="checkbox" name="samerule' + sum_i + '" value="' + j + '"  onClick="DisChecked(' + sum_i + ');formSwitch2(' + sum_j + ')">' + (j+1) + '箇所目</label><br/>'
+                    str_af_or_it += '<span id="same_rule' + sum_j + '" style="display:block;">・<math xmlns="http://www.w3.org/1998/Math/MathML">' + list_af_or_it[i] +
+                    '</math>の数学的意味を１つ選択してください。<br/><input type="radio" name="af_or_it' + sum_i_j + '" value="0" id="af' + sum_j + '"><label for="af' + sum_j + '">関数</label><br/><input type="radio" name="af_or_it' + sum_i_j + '" value="1" id="it' + sum_j + '"><label for="it' + sum_j + '">乗算</label><br/><br/>';
+                    str_af_or_it += '</span><br/>';
+                }
+                str_af_or_it += '</form><br/>'
+                //sum_j += list_af_or_it_num.length;
+            }
+        }
+        sum_i += list_af_or_it.length;
+    
+        //関数か座標になる箇所の変換に関するhtmlを作成
+        for (var i=0; i<list_af_or_zahyou.length;i++){
+            str_af_or_zahyou += '・<math xmlns="http://www.w3.org/1998/Math/MathML">' + list_af_or_zahyou[i] +
+            '</math>の数学的意味を１つ選択してください。<br/><input type="radio" name="af_or_zahyou' + i + '" value="0" id="af2' + i + '"><label for="af2' + i + '">関数</label><br/><input class="js-check' + i + '" type="radio" name="af_or_zahyou' + i + '" value="1" id="zahyou' + i + '"><label for="zahyou' + i + '">座標</label><br/><br/>';
+        }
+        //帯分数の変換に関するhtmlを作成
+        for (var i=0; i<list_ip.length;i++){
+            str_ip += '・<math xmlns="http://www.w3.org/1998/Math/MathML">' + list_ip[i] + '</math>は帯分数ですか、それとも整数と分数の乗算ですか。<br/><input class="js-check' + i + '" type="radio" name="ip' + i + '" value="0" id="ip' + i + '"><label for="ip' + i + '">帯分数</label><br/><input class="js-check' + i + '" type="radio" name="ip' + i + '" value="1" id="it2' + i + '"><label for="it2' + i + '">乗算</label><br/><br/>';
+        }
+        //行列の成分の添字の変換に関するhtmlを作成
+        for (var i=0; i<list_ic.length;i++){
+            str_ic += '・<math xmlns="http://www.w3.org/1998/Math/MathML">' + list_ic[i] + '</math>の添字のカンマの位置を選択してください。<br/>';
+        }
+        
+        
+        //console.log(list_af_or_it);
+        //console.log(list_af_or_zahyou);
+        //console.log(list_ip);
+        //console.log(list_ic);
+        //console.log(list_mi);
+        //console.log(str_af_or_it);
+        
+        document.getElementById('str_mi_henkan').innerHTML = str_mi_henkan;
+        document.getElementById('str_af_or_it').innerHTML = str_af_or_it;
+        document.getElementById('str_af_or_zahyou').innerHTML = str_af_or_zahyou;
+        document.getElementById('str_ip').innerHTML = str_ip;
+        document.getElementById('str_ic').innerHTML = str_ic;
+        
+
+        //var selecter = document.getElementById('mi_selecter');
+        //変数の変換でラジオボタンの「複数の変数として〜」の方を選んだらチェックボックスが表示される
+        function formSwitch(num,lengthNot2) {
+            check = document.getElementsByClassName('js-check' + num);
+            var selecter = document.getElementById('mi_selecter' + num);
+            //selecter.style.display = "none";
+            if (check[0].checked) {
+                selecter.style.display = "none";
+
+            } else if (check[1].checked && lengthNot2) {
+                selecter.style.display = "block";
+            } else {
+                selecter.style.display = "none";
+            }
+        }
+        //同じルールを適用するかの箇所で「n箇所目」のチェックが外れていたらルール選択のフォームが表示される
+        function formSwitch2(num) {
+            check = document.getElementsByClassName('same_rule-check' + num);
+            var selecter = document.getElementById('same_rule' + num);
+            selecter.style.display = "block";
+            if (check[0].checked) {
+                selecter.style.display = "none";
+
+            } else {
+                selecter.style.display = "block";
+            }
+        }
+        //window.addEventListener('load', formSwitch(i));
+        
+        // 「全て選択」チェックで全てにチェック付く
+        function AllChecked(num,num2,num3){
+            let checkbox_all = document.getElementsByName('all' + num);
+            var all = checkbox_all[0].checked;
+            let checkbox_samerule = document.getElementsByName('samerule' + num);
+            for (var i=0; i<checkbox_samerule.length; i++){
+                checkbox_samerule[i].checked = all;
+                for(var j=1; j<num3;j++){
+                    formSwitch2(num2+j)
+                }
+            }
+        }
+        // 一つでもチェックを外すと「全て選択」のチェック外れる
+        function DisChecked(num){
+            let checkbox_all = document.getElementsByName('all' + num);
+            let checkbox_samerule = document.getElementsByName('samerule' + num);
+            var checksCount = 0;
+            for (var i=0; i<checkbox_samerule.length; i++){
+              if(checkbox_samerule[i].checked == false){
+                checkbox_all[0].checked = false;
+              }else{
+                checksCount += 1;
+                if(checksCount == checkbox_samerule.length){
+                  checkbox_all[0].checked = true;
+                }
+              }
+            }
+        }
+    </script>
+    <input type="button" value="ルールを保存" id="conversion">
+
+    </p>
+    
+    <script src="https://code.jquery.com/jquery-3.0.0.min.js"></script>
+    <script>
+        //ルールを送信
+        let conversionButton = document.getElementById('conversion');
+        
+        //変換ボタンを押したら以下の処理を行う
+        conversionButton.onclick = function buttonClick(){
+            let checkValue = '';
+            let rule_mi ="";
+            let rule_mi_multi ="";
+            let rule_af_or_it ="";
+            let rule_af_or_zahyou ="";
+            let rule_ip ="";
+            let rule_ic ="";
+            let sum_i = 0;
+            let sum_j = 0;
+            let sum_i_j = 0;
+
+            //変数の変換ルールをリストに格納
+            for(var i=0; i<list_mi_henkan.length;i++){
+                sum_i_j += 1;
+                //一つの変数or複数の変数
+                let Radio = document.getElementsByName('integer' + i);
+                let lenRadio = Radio.length;
+                let original_rule_mi = "";
+                //console.log(len);
+                //Radio[1].checked = true;
+                for (let j = 0; j < lenRadio; j++){
+                    if (Radio.item(j).checked){
+                        checkValue = Radio.item(j).value;
+                        original_rule_mi = checkValue;
+                    }
+                }
+                
+                rule_mi += checkValue;
+                //console.log(checkValue);
+                
+                //複数の変数として扱う場合の変換ルール
+                let integerCheckbox = document.getElementsByName('multi' + i);
+                let lenCheckbox = integerCheckbox.length;
+                let original_rule_mi_multi = "";
+                for (let j = 0; j < lenCheckbox; j++){
+                    if(integerCheckbox.item(j).checked){
+                        rule_mi_multi += integerCheckbox.item(j).value;
+                        original_rule_mi_multi += integerCheckbox.item(j).value;
+                    }
+                    if(j == lenCheckbox-1){
+                        rule_mi_multi += ",";
+                    }
+                }
+                //console.log(checkValue);
+                //rule_mi += checkValue;
+                
+                //同じルールを適用できる箇所があった場合
+                if(list_mi_henkan_num[i] != 1){
+                    let samerule_checkbox = document.getElementsByName('samerule' + i);
+                    for(var j=1; j<list_mi_henkan_num[i];j++){
+                        sum_j += 1;
+                        sum_i_j += 1;
+                        //同じルールを適用する場合
+                        if(samerule_checkbox[j-1].checked){
+                            rule_mi += original_rule_mi;
+                            rule_mi_multi += original_rule_mi_multi;
+                            rule_mi_multi += ",";
+                        }else{//新しいルールを適用する場合
+                            let Radio = document.getElementsByName('integer' + sum_i_j);
+                            let lenRadio = Radio.length;
+                            let integerCheckbox = document.getElementsByName('multi' + sum_i_j);
+                            let lenCheckbox = integerCheckbox.length;
+                            for (let k = 0; k < lenRadio; k++){
+                                if (Radio.item(k).checked){
+                                    checkValue = Radio.item(k).value;
+                                }
+                            }
+                            rule_mi += checkValue;
+                            for (let k = 0; k < lenCheckbox; k++){
+                                if(integerCheckbox.item(k).checked){
+                                    rule_mi_multi += integerCheckbox.item(k).value;
+                                }
+                                if(k == lenCheckbox-1){
+                                    rule_mi_multi += ",";
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            sum_i += list_mi_henkan_num;
+            sum_i_j = 0;
+            
+            //関数か変数かの変換ルールをリストに格納
+            for(var i=0; i<list_af_or_it.length;i++){
+                sum_i += 1;
+                //一つの変数or複数の変数
+                Radio = document.getElementsByName('af_or_it' + i);
+                lenRadio = Radio.length;
+                let original_rule_af_or_it = "";
+                //console.log(len);
+                //Radio[1].checked = true;
+                for (let j = 0; j < lenRadio; j++){
+                    if (Radio.item(j).checked){
+                        checkValue = Radio.item(j).value;
+                        original_rule_af_or_it = checkValue;
+                    }
+                }
+                
+                rule_af_or_it += checkValue;
+                //console.log(checkValue);
+                
+                //同じルールを適用できる箇所があった場合
+                if(list_af_or_it_num[i] != 1){
+                    let samerule_checkbox = document.getElementsByName('samerule' + sum_i);
+                    for(var j=1; j<list_af_or_it_num[i];j++){
+                        sum_j += 1;
+                        //同じルールを適用する場合
+                        if(samerule_checkbox[j-1].checked){
+                            rule_af_or_it += original_rule_af_or_it;
+                        }else{//新しいルールを適用する場合
+                            let Radio = document.getElementsByName('af_or_it' + (sum_j + j));
+                            let lenRadio = Radio.length;
+                            for (let k = 0; k < lenRadio; k++){
+                                if (Radio.item(k).checked){
+                                    checkValue = Radio.item(k).value;
+                                }
+                            }
+                            rule_mi += checkValue;
+                            for (let k = 0; k < lenCheckbox; k++){
+                                if(integerCheckbox.item(k).checked){
+                                    rule_mi_multi += integerCheckbox.item(k).value;
+                                }
+                                if(k == lenCheckbox-1){
+                                    rule_mi_multi += ",";
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            console.log(rule_mi);
+            console.log(rule_mi_multi);
+            $(function(){
+                $.ajax({
+                  url: '/normalizations/conversion',
+                  type: 'GET',
+                  //dataType: 'json',
+                  data: {
+                       rule_mi: rule_mi,
+                       rule_mi_multi:rule_mi_multi,
+                       rule_af_or_it:rule_af_or_it,
+                       rule_af_or_zahyou:rule_af_or_zahyou,
+                       rule_ip:rule_ip,
+                       rule_ic:rule_ic
+                  },
+                })
+                .done(function(data) {
+                      console.log("success");
+                    // 通信成功時の処理を記述
+                })
+                .fail(function() {
+                    console.log("fail");
+                    // 通信失敗時の処理を記述
+                });
+              });
+        }
+    </script>
+
+  </body>
+</html>

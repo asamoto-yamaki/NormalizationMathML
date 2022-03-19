@@ -1,0 +1,30 @@
+<%= javascript_pack_tag 'user/application' %>
+<?xml version="1.0" encoding="Shift_JIS" ?>
+<!DOCTYPE html  PUBLIC
+"-//W3C//DTD XHTML 1.1 plus MathML 2.0//EN"
+"http://www.w3.org/TR/MathML2/dtd/xhtml-math11-f.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" >
+<h1>MathMLの一意な表現形式記述への変換ツール</h1>
+
+  <head>
+    <title>MathMLの一意な表現形式記述への変換ツール</title>
+    <link rel="stylesheet" type="text/css" href="conversion.css">
+  </head>
+  <body>
+      <div style="margin:30px;">
+
+        <p>
+        MathMLの一意な表現形式記述への変換ツール
+        <%= @rule %>
+        <%= @output %>
+        <input type="hidden" id="output" value="<%= @output %>">
+        <script>
+            const kekka_str = document.getElementById('output').value;
+            console.log(kekka_str);
+        </script>
+        <%= button_to '変換後ファイルのダウンロード', {controller: 'normalizations', action: 'download'}, method: :get, class: "btn btn-default" %>
+        <%= button_to 'ログファイルのダウンロード', {controller: 'normalizations', action: 'downloadlog'}, method: :get, class: "btn btn-default" %>
+        </p>
+    </div>
+  </body>
+</html>

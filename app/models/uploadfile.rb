@@ -1,0 +1,2 @@
+class Uploadfile < ApplicationRecord
+end

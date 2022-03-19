@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<!--
+<%= javascript_pack_tag 'user/application' %>
+-->
+<html>
+  <head>
+    <title>MathMLの一意な表現形式記述への変換ツール</title>
+  </head>
+  <body>
+
+    <p>
+    MathMLの一意な表現形式記述への変換ツール
+    </p>
+    
+    <form action="#" method="post" enctype="multipart/form-data">
+    <p>
+    ファイルを選択して下さい<br/>
+    <input type="file" id="file" accept=".html" name="filename" required/>
+    <pre id="pre1"></pre>
+    </p>
+    </form>
+    <!--
+    <%= button_to "変換", {controller: 'normalizations', action: 'rule'}, {method: :get} %>
+    -->
+    <%= link_to ("/normalizations/rule") do %>
+        <input type="button" value="送信" id="submit">
+    <% end %>
+    <!--
+    <script src="https://code.jquery.com/jquery-3.0.0.min.js"></script>
+    <script>
+        //ルールを送信
+        let submitButton = document.getElementById('submit');
+        
+        //変換ボタンを押したら以下の処理を行う
+        submitButton.onclick = function buttonClick(){
+            const fileInput = document.getElementById('file');
+            const inputfile = fileInput.files;
+            console.log(inputfile);
+            console.log(inputfile[0])
+            
+            $(function(){
+                        $.ajax({
+                          url: '/normalizations/rule',
+                          type: 'POST',
+                          //dataType: 'json',
+                          data: {
+                               inputfile: inputfile[0]
+                          },
+                        })
+                        .done(function(data) {
+                              console.log("success");
+                            // 通信成功時の処理を記述
+                        })
+                        .fail(function() {
+                            console.log("fail");
+                            // 通信失敗時の処理を記述
+                        });
+                      });
+                
+        }
+    </script>-->
+    
+  </body>
+  <%= javascript_pack_tag 'user/application' %>
+</html>
+
+
